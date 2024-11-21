@@ -14,6 +14,7 @@ import {
 import { Input } from "@components/ui/input"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
+import { toast } from "@hooks/use-toast"
 
 
 const formSchema = z.object({
@@ -37,9 +38,28 @@ const RegisterFom = () => {
     })
 
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
-        console.log(values)
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify({
+                email: values.email,
+                username: values.username,
+                password: values.password
+            })
+        });
+
+        if (response.status === 200) {
+            router.push("/")
+            toast({
+                title: "Registration has bee done successfully🎉",
+            })
+        } else {
+            toast({
+                title: "Error while performing registration",
+                variant: "destructive"
+            })
+        }
 
     }
     return (
