@@ -1,21 +1,22 @@
-import NextAuth from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import { compare } from 'bcrypt'
-import { db } from '@lib/db'
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcrypt";
+import { db } from "@lib/db";
 
 
 const handler = NextAuth({
     session: {
-        strategy: 'jwt'
+        strategy: "jwt",
     },
     pages: {
-        signIn: "/login"
+        signIn: "/login",
     },
     providers: [
         CredentialsProvider({
+            name: "Credentials",
             credentials: {
                 email: { label: "email", type: "text" },
-                password: { label: "password", type: "passsword" },
+                password: { label: "password", type: "password" },
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
@@ -34,18 +35,17 @@ const handler = NextAuth({
 
                 const isCorrectPassword = await compare(
                     credentials.password,
-                    user?.hashedPassword
-                )
+                    user.hashedPassword
+                );
 
                 if (!isCorrectPassword) {
                     throw new Error("Invalid credentials");
                 }
 
                 return user;
-            }
-        })
-    ]
-})
+            },
+        }),
+    ],
+});
 
-
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
