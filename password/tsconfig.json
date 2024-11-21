@@ -21,6 +21,7 @@
     ],
     "paths": {
       "@/components/*": ["app/components/*"],
+      "@/features/*": ["@/auth/Login/*"],
       "@components/*": ["components/*"],
       "@utils/*": ["lib/utils/*"],
       "@ui/*": ["components/ui/*"],
