@@ -1,6 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form"
+import { signIn } from "next-auth/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@components/ui/button"
 import {
@@ -14,6 +15,7 @@ import {
 import { Input } from "@components/ui/input"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
+import { toast } from "@hooks/use-toast"
 
 
 const formSchema = z.object({
@@ -35,10 +37,23 @@ const LoginForm = () => {
     })
 
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-
-        console.log(values)
-
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const response = await signIn("credentials", {
+            email: values.email,
+            password: values.password,
+            redirect: false,
+        });
+        if (response?.status === 200) {
+            toast({
+                title: "Login successfully completed"
+            });
+            router.push("/")
+        } else {
+            toast({
+                title: "Error when logging in",
+                variant: "destructive"
+            })
+        }
     }
     return (
         <div>
