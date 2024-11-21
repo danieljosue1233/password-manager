@@ -41,7 +41,6 @@ export const FormAddElement = () => {
         try {
             await axios.post("/api/items", values)
             toast({ title: "Item created 🎉" })
-
             form.reset(
                 {
                     typeElement: "",
