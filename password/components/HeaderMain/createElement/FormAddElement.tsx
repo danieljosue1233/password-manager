@@ -8,8 +8,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@components/ui/input";
 import { Button } from "@components/ui/button";
 import { formSchema } from "./schemas/FormAddSchema";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "@components/ui/select";
-import { SelectItem } from "@radix-ui/react-select";
+import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from "@components/ui/select";
 import { Checkbox } from "@components/ui/checkbox";
 import { toast } from "@hooks/use-toast";
 import { Copy, Earth, Eye, Shuffle } from "lucide-react";
@@ -17,9 +16,11 @@ import { copyClipboard } from "@lib/copyClipboard";
 import { useState } from "react";
 import { generatePassword } from "@lib/generatePassword";
 import { Textarea } from "@components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 export const FormAddElement = () => {
     const [showPassword, setShowPassword] = useState(false)
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -53,6 +54,9 @@ export const FormAddElement = () => {
                     notes: "",
                     userId: "udjad"
                 });
+
+            router.refresh();
+
         } catch (error) {
             toast({
                 title: "something went wrong",
@@ -88,7 +92,7 @@ export const FormAddElement = () => {
                                             <SelectValue className="truncate" placeholder="Select a directory for your password" />
                                         </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent>
+                                    <SelectContent className="cursor-pointer">
                                         <SelectItem value="Inicio de sesion">
                                             Inicio de sesion
                                         </SelectItem>
@@ -99,9 +103,6 @@ export const FormAddElement = () => {
                                             Identidad
                                         </SelectItem>
                                     </SelectContent>
-                                    <FormDescription>
-                                        This is your public display name.
-                                    </FormDescription>
                                 </Select>
                                 <FormMessage />
                             </FormItem>
