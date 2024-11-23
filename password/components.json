@@ -12,7 +12,6 @@
   },
   "aliases": {
     "components": "@/components",
-    "features": "@/auth/Login",
     "utils": "@/lib/utils",
     "ui": "@/components/ui",
     "lib": "@/lib",
