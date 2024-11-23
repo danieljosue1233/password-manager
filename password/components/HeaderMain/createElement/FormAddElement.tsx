@@ -13,12 +13,17 @@ import { Checkbox } from "@components/ui/checkbox";
 import { toast } from "@hooks/use-toast";
 import { Copy, Earth, Eye, Shuffle } from "lucide-react";
 import { copyClipboard } from "@lib/copyClipboard";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { generatePassword } from "@lib/generatePassword";
 import { Textarea } from "@components/ui/textarea";
 import { useRouter } from "next/navigation";
 
-export const FormAddElement = () => {
+interface FormAddElementProps {
+    closeDialog: () => void
+    userId?: string;
+}
+
+export const FormAddElement: FC<FormAddElementProps> = ({ userId, closeDialog }) => {
     const [showPassword, setShowPassword] = useState(false)
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -32,7 +37,7 @@ export const FormAddElement = () => {
             password: "",
             urlWebsite: "",
             notes: "",
-            userId: "udjad"
+            userId: userId,
         },
     })
 
@@ -51,8 +56,8 @@ export const FormAddElement = () => {
                     password: "",
                     urlWebsite: "",
                     notes: "",
-                    userId: "udjad"
                 });
+            closeDialog()
 
             router.refresh();
 
