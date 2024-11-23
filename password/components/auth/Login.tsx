@@ -1,7 +1,15 @@
+import { getServerSession } from "next-auth";
 import ImageAuth from "./ImageAuth/ImageAuth";
 import TabsForms from "./TabsForm/TabsForms";
+import { redirect } from "next/navigation";
 
-const Login = () => {
+const Login = async () => {
+    const session = await getServerSession()
+
+    if (session) {
+        redirect("/");
+    }
+
     return (
         <div className="grid md:grid-cols-2 h-full max-h-screen overflow-hidden">
             <div className="flex justify-center h-full">
